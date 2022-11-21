@@ -3,24 +3,27 @@ using UnityEngine;
 using Zenject;
 
 namespace Com.Afb.RunGame.Presentation.View {
-    public class CubeView : MonoBehaviour, IPoolable<Transform> {
+    public class CubeView : MonoBehaviour, IPoolable<Transform, Vector3> {
+        // Serialize Fields
+        [SerializeField]
+        private MovableXView movableXView;
         // Dependencies
         [Inject]
         private ICubeInteractor cubeInteractor;
 
-        // TODO remove after test
-        private void Start() {
-            cubeInteractor.InitializeCube();
-        }
-
         // Public Methods
-        public void OnSpawned(Transform parent) {
+        public void OnSpawned(Transform parent, Vector3 position) {
             transform.SetParent(parent);
+            transform.localPosition = position;
             cubeInteractor.InitializeCube();
         }
 
         public void OnDespawned() {
 
+        }
+
+        public float GetXPosition() {
+            return movableXView.transform.localPosition.x;
         }
     }
 }
