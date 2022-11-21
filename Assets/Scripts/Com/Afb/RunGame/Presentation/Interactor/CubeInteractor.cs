@@ -19,6 +19,8 @@ namespace Com.Afb.RunGame.Presentation.Interactor {
 
         public void InitializeCube() {
             isCurrent = true;
+            cubeUpdatablePresenter.Reset();
+
             platformUseCase.Speed
                 .TakeWhile(_ => isCurrent)
                 .Subscribe(SetSpeed);
@@ -38,14 +40,14 @@ namespace Com.Afb.RunGame.Presentation.Interactor {
 
         private void OnLockCurrentCube(CubeCutModel cubeCut) {
             isCurrent = false;
-            cubeUpdatablePresenter.SetIsMoving(false);
-
+            cubeUpdatablePresenter.SetCut(cubeCut);
         }
 
         private void OnCurrentCubeChange(CurrentCubeModel currentCube) {
             cubeUpdatablePresenter.SetColor(currentCube.Color);
             cubeUpdatablePresenter.SetSize(currentCube.Size);
-            cubeUpdatablePresenter.SetIsMoving(true);
+            cubeUpdatablePresenter.SetXPosition(currentCube.XPosition);
+            cubeUpdatablePresenter.SetIsMoving(currentCube.IsMoving);
         }
     }
 }
