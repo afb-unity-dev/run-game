@@ -1,6 +1,6 @@
 using System;
 using Com.Afb.RunGame.Presentation.Presenter;
-using Com.Afb.RunGame.Presentation.View.Util;
+using Com.Afb.RunGame.Util;
 using UniRx;
 using UnityEngine;
 using Zenject;
@@ -38,7 +38,7 @@ namespace Com.Afb.RunGame.Presentation.View {
 
         private void OnMoveStateChange(bool isMoving) {
             if (isMoving) {
-                Vector3 direction = transform.position.x < 0 ? Vector3.right : Vector3.left;
+                Vector3 direction = transform.localPosition.x < 0 ? Vector3.right : Vector3.left;
                 BeginMove(direction);
             }
             else {
@@ -54,7 +54,7 @@ namespace Com.Afb.RunGame.Presentation.View {
         private void BeginMove(Vector3 direction) {
             directionObserver?.Dispose();
             directionObserver = Observable.EveryFixedUpdate()
-                .Where(_ => transform.position.x < ViewConstants.LEFT_BOUNDARY || transform.position.x > ViewConstants.RIGHT_BOUNDARY)
+                .Where(_ => transform.localPosition.x < Constants.LEFT_BOUNDARY || transform.localPosition.x > Constants.RIGHT_BOUNDARY)
                 .TakeWhile(_ => isMoving)
                 .TakeUntilDisable(gameObject)
                 .Subscribe(ChangeDirection);
@@ -67,12 +67,12 @@ namespace Com.Afb.RunGame.Presentation.View {
             var currentDirection = body.velocity;
             currentDirection.Normalize();
 
-            if (transform.position.x < ViewConstants.LEFT_BOUNDARY) {
+            if (transform.localPosition.x < Constants.LEFT_BOUNDARY) {
                 if (currentDirection == Vector3.left) {
                     body.velocity = Vector3.right * speed;
                 }
             }
-            else if (transform.position.x > ViewConstants.RIGHT_BOUNDARY) {
+            else if (transform.localPosition.x > Constants.RIGHT_BOUNDARY) {
                 if (currentDirection == Vector3.right) {
                     body.velocity = Vector3.left * speed;
                 }
