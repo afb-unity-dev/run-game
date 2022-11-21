@@ -10,6 +10,8 @@ namespace Com.Afb.RunGame.Presentation.View {
         // Dependencies
         [Inject]
         private ICubeMeshPresenter cubeMeshPresenter;
+        [Inject]
+        private MonoPoolableMemoryPool<Vector3, Vector3, Color, CutView> cutViewPool;
 
         // Private Properties
         private MeshRenderer meshRenderer;
@@ -31,11 +33,21 @@ namespace Com.Afb.RunGame.Presentation.View {
             cubeMeshPresenter.CubeCut
                  .TakeUntilDestroy(gameObject)
                  .Subscribe(OnCubeCut);
+
+            cubeMeshPresenter.XPosition
+                 .TakeUntilDestroy(gameObject)
+                 .Subscribe(OnXPosition);
         }
 
         // Private Methods
-        private void OnColorChange(Color obj) {
-            meshRenderer.material.color = obj;
+        private void OnXPosition(float x) {
+            var pos = transform.localPosition;
+            pos.x = x;
+            transform.localPosition = pos;
+        }
+
+        private void OnColorChange(Color color) {
+            meshRenderer.material.color = color;
         }
 
         private void OnSizeChange(Vector3 size) {
@@ -46,6 +58,11 @@ namespace Com.Afb.RunGame.Presentation.View {
         }
 
         private void OnCubeCut(CubeCutModel cut) {
+            if (cut != null) {
+                var position = new Vector3(cut.XPosition, transform.position.y, transform.position.z);
+                cutViewPool.Spawn(position, cut.Size, cut.Color);
+            }
+
         }
     }
 }
