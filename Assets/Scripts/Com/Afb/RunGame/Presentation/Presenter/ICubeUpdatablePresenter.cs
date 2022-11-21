@@ -1,3 +1,4 @@
+using Com.Afb.RunGame.Business.Model;
 using UnityEngine;
 
 namespace Com.Afb.RunGame.Presentation.Presenter {
@@ -7,5 +8,8 @@ namespace Com.Afb.RunGame.Presentation.Presenter {
         void SetColor(Color color);
         void SetIsMoving(bool isMoving);
         void SetSpeed(float speed);
+        void SetCut(CubeCutModel cut);
+        void SetXPosition(float x);
+        void Reset();
     }
 }
