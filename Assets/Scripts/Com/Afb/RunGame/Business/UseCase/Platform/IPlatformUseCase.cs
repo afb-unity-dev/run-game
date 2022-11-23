@@ -1,3 +1,4 @@
+using System;
 using UniRx;
 
 namespace Com.Afb.RunGame.Business.UseCase {
@@ -5,5 +6,6 @@ namespace Com.Afb.RunGame.Business.UseCase {
         // Properties
         IReadOnlyReactiveProperty<int> CharacterPosition { get; }
         IReadOnlyReactiveProperty<int> TargetPosition { get; }
+        IObservable<bool> OnResetPlatform { get; }
     }
 }

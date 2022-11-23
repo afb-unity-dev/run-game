@@ -6,11 +6,18 @@ namespace Com.Afb.RunGame.Installers.Game {
         // Public Methods
         public override void InstallBindings() {
             BindPlatformInteractor();
+            BindgameInteractor();
         }
 
         // Private Methods
         private void BindPlatformInteractor() {
             Container.BindInterfacesTo<PlatformInteractor>()
+                .AsSingle()
+                .Lazy();
+        }
+
+        private void BindgameInteractor() {
+            Container.BindInterfacesTo<GameInteractor>()
                 .AsSingle()
                 .Lazy();
         }

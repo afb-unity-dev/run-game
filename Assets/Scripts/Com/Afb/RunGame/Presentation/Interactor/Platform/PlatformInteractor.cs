@@ -12,20 +12,17 @@ namespace Com.Afb.RunGame.Presentation.Interactor {
         private readonly IPlatformUseCase platformUseCase;
         private readonly IPlatformUpdatablePresenter platformUpdatablePresenter;
         private readonly ICubeCreateUseCase cubeCreateUseCase;
-        private readonly IGameStateUseCase gameStateUseCase;
 
         // Constructor
         public PlatformInteractor(ICubePlacementUseCase cubePlacementUseCase,
                 IPlatformUseCase platformUseCase,
                 IPlatformUpdatablePresenter platformUpdatablePresenter,
-                ICubeCreateUseCase cubeCreateUseCase,
-                IGameStateUseCase gameStateUseCase) {
+                ICubeCreateUseCase cubeCreateUseCase) {
 
             this.platformUseCase = platformUseCase;
             this.cubePlacementUseCase = cubePlacementUseCase;
             this.platformUpdatablePresenter = platformUpdatablePresenter;
             this.cubeCreateUseCase = cubeCreateUseCase;
-            this.gameStateUseCase = gameStateUseCase;
 
             platformUseCase.CharacterPosition
                 .Subscribe(OnCharacterPositionChange)
@@ -33,8 +30,8 @@ namespace Com.Afb.RunGame.Presentation.Interactor {
             platformUseCase.TargetPosition
                 .Subscribe(OnTargetPositionChange)
                 .AddTo(disposables);
-            gameStateUseCase.GameOver
-                .Subscribe(OnGameOver)
+            platformUseCase.OnResetPlatform
+                .Subscribe(OnResetPlatform)
                 .AddTo(disposables);
         }
 
@@ -60,8 +57,9 @@ namespace Com.Afb.RunGame.Presentation.Interactor {
             platformUpdatablePresenter.SetCharacterPosition(position);
         }
 
-        private void OnGameOver(bool success) {
-            platformUpdatablePresenter.SetGameOver(success);
+        private void OnResetPlatform(bool restart) {
+            platformUpdatablePresenter.SetResetPlatform(restart);
         }
+
     }
 }

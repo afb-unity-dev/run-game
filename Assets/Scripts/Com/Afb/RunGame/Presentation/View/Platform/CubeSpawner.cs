@@ -4,22 +4,16 @@ using UnityEngine;
 using Zenject;
 
 namespace Com.Afb.RunGame.Presentation.View {
-    public class CubeSpawner : MonoBehaviour {
-        // Serialize Fields
-        [SerializeField]
-        private Transform cubeParent;
-
+    public class CubeSpawner : GenericCubeSpawner<CubeView> {
         // Dependencies
         [Inject]
-        private IPlatformCubeInteractor platformCubeInteractor; 
-        [Inject]
-        private MonoPoolableMemoryPool<Transform, Vector3, CubeView> cubeViewPool;
+        private IPlatformCubeInteractor platformCubeInteractor;
 
         // Public Methods
-        public CubeView Spawn(float zPosition) {
+        public override CubeView Spawn(float zPosition) {
             platformCubeInteractor.AddCube();
             var position = new Vector3(0, -Constants.CUBE_HEIGHT / 2, zPosition);
-            return cubeViewPool.Spawn(cubeParent, position);
+            return viewPool.Spawn(parent, position);
         }
     }
 }
