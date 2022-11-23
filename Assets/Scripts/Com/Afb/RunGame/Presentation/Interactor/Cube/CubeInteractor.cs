@@ -1,3 +1,4 @@
+using System;
 using Com.Afb.RunGame.Business.Model;
 using Com.Afb.RunGame.Business.UseCase;
 using Com.Afb.RunGame.Presentation.Presenter;
@@ -32,6 +33,14 @@ namespace Com.Afb.RunGame.Presentation.Interactor {
             cubeUseCase.LockCurrentCube
                 .TakeWhile(_ => isCurrent)
                 .Subscribe(OnLockCurrentCube);
+
+            cubeUseCase.PerfectScore
+                .TakeWhile(_ => isCurrent)
+                .Subscribe(OnPerfectScore);
+        }
+
+        private void OnPerfectScore(int score) {
+            cubeUpdatablePresenter.SetPerfectScore(score);
         }
 
         private void SetSpeed(float speed) {

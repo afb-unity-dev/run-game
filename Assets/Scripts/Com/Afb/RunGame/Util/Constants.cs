@@ -13,5 +13,6 @@ namespace Com.Afb.RunGame.Util {
         public const float RIGHT_BOUNDARY = INITIAL_WIDTH / 2;
         public const int CUT_DIRECTION_LEFT = 1;
         public const int CUT_DIRECTION_RIGHT = -1;
+        public const int NUMBER_OF_NOTES = 7;
     }
 }

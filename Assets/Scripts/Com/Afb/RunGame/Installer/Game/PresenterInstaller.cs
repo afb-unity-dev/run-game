@@ -8,6 +8,7 @@ namespace Com.Afb.RunGame.Installers.Game {
             BindPlatformPresenter();
             BindGamePresenter();
             BindCharacterPresenter();
+            BindSoundPresenter();
         }
 
         // Private Methods
@@ -25,6 +26,12 @@ namespace Com.Afb.RunGame.Installers.Game {
 
         private void BindCharacterPresenter() {
             Container.BindInterfacesTo<CharacterPresenter>()
+                .AsSingle()
+                .Lazy();
+        }
+
+        private void BindSoundPresenter() {
+            Container.BindInterfacesTo<SoundPresenter>()
                 .AsSingle()
                 .Lazy();
         }
