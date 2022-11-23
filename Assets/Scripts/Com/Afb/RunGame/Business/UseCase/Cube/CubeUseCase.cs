@@ -14,16 +14,19 @@ namespace Com.Afb.RunGame.Business.UseCase {
         private readonly ReactiveProperty<CurrentCubeModel> currentCube = new ReactiveProperty<CurrentCubeModel>(null);
         private readonly ReactiveProperty<float> speed = new ReactiveProperty<float>(5);
         private readonly Subject<CubeCutModel> lockCurrentCube = new Subject<CubeCutModel>();
+        private readonly Subject<int> perfectScore = new Subject<int>();
 
         // Private Properties
         private float lastPosition;
         private float lastWidth;
         private Vector3 lastSize;
+        private int lastScore = -1;
 
         // Public Properties
         public IReadOnlyReactiveProperty<CurrentCubeModel> CurrentCube => currentCube;
         public IReadOnlyReactiveProperty<float> Speed => speed;
         public IObservable<CubeCutModel> LockCurrentCube => lockCurrentCube;
+        public IObservable<int> PerfectScore => perfectScore;
 
         // Constructor
         public CubeUseCase(LazyInject<WeakReference<IPlatformUpdatableUseCase>> platformUseCase,
@@ -60,9 +63,25 @@ namespace Com.Afb.RunGame.Business.UseCase {
             lastWidth = cube.Size.x;
 
             if (cubeCutModel != null) {
+                if (cube.Size.x <= 0) {
+                    lastScore = -1;
+                }
+                else {
+                    lastScore = 0;
+                }
+
+                perfectScore.OnNext(lastScore);
+
                 lockCurrentCube.OnNext(cubeCutModel);
             }
             else {
+                if (lastScore < -1) {
+                    lastScore = -1;
+                }
+
+                lastScore++;
+                perfectScore.OnNext(lastScore);
+
                 lockCurrentCube.OnNext(null);
             }
 

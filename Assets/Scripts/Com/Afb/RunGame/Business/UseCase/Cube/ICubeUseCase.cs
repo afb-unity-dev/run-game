@@ -8,5 +8,6 @@ namespace Com.Afb.RunGame.Business.UseCase {
         IReadOnlyReactiveProperty<float> Speed { get; }
         IReadOnlyReactiveProperty<CurrentCubeModel> CurrentCube { get; }
         IObservable<CubeCutModel> LockCurrentCube { get; }
+        IObservable<int> PerfectScore { get; }
     }
 }
