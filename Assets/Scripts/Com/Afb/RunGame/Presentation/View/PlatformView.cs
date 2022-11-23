@@ -1,5 +1,7 @@
-using Com.Afb.RunGame.Business.UseCase;
+using Com.Afb.RunGame.Presentation.Interactor;
+using Com.Afb.RunGame.Presentation.Presenter;
 using Com.Afb.RunGame.Util;
+using UniRx;
 using UnityEngine;
 using Zenject;
 
@@ -13,19 +15,34 @@ namespace Com.Afb.RunGame.Presentation.View {
         [Inject]
         private MonoPoolableMemoryPool<Transform, Vector3, CubeView> cubeViewPool;
         [Inject]
-        private IGameUseCase gameUseCase; // TODO delete
+        private IPlatformInteractor platformInteractor;
+        [Inject]
+        private IPlatformPresenter platformPresenter;
 
         // Private Properties
         private CubeView currentCubeView;
 
+        // Unity Methods
         private void Start() {
-            var position =  new Vector3(0, -Constants.CUBE_HEIGHT / 2, 1.5f);
-            currentCubeView = cubeViewPool.Spawn(movingPlatformParent, position);
+            platformPresenter.CharacterPosition.TakeUntilDestroy(gameObject).Subscribe(OnCharacterPosition);
         }
 
+        // Public Methods
         public void OnClick() {
             float xPosition = currentCubeView.GetXPosition();
-            gameUseCase.PlaceCube(xPosition);
+            platformInteractor.PlaceCube(xPosition);
+        }
+
+        // Private Methods
+        private void OnCharacterPosition(int position) {
+            float zPosition = position * Constants.CUBE_LENGTH + Constants.INITIAL_POSITION + Constants.CUBE_LENGTH / 2;
+            SpawnCube(zPosition);
+        }
+
+        private void SpawnCube(float zPosition) {
+            var position = new Vector3(0, -Constants.CUBE_HEIGHT / 2, zPosition);
+            currentCubeView = cubeViewPool.Spawn(movingPlatformParent, position);
+
         }
     }
 }
