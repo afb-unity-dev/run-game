@@ -8,7 +8,7 @@ namespace Com.Afb.RunGame.Business.UseCase {
         private readonly LazyInject<WeakReference<IGameStateUpdatableUseCase>> gameStateUseCase;
         private readonly LazyInject<WeakReference<ICubeUpdatableUseCase>> cubeUseCase;
         private readonly ReactiveProperty<int> characterPosition = new ReactiveProperty<int>(0);
-        private readonly ReactiveProperty<int> targetPosition = new ReactiveProperty<int>(10);
+        private readonly ReactiveProperty<int> targetPosition = new ReactiveProperty<int>(4);
 
         // Private Properties
         private float lastPosition = 0;
@@ -23,8 +23,6 @@ namespace Com.Afb.RunGame.Business.UseCase {
 
             this.cubeUseCase = cubeUseCase;
             this.gameStateUseCase = gameStateUseCase;
-
-            Initialize();
         }
 
         // Public Methods
@@ -37,19 +35,7 @@ namespace Com.Afb.RunGame.Business.UseCase {
                 }
             }
             else {
-                CreateCube();
                 characterPosition.Value = newCharacterPos;
-            }
-        }
-
-        // Private Methods
-        private void Initialize() {
-            CreateCube();
-        }
-
-        private void CreateCube() {
-            if (cubeUseCase.Value.TryGetTarget(out var target)) {
-                target.CreateNewCube();
             }
         }
     }

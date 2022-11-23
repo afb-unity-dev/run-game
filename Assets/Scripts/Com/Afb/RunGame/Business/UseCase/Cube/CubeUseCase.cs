@@ -7,7 +7,7 @@ using UnityEngine;
 using Zenject;
 
 namespace Com.Afb.RunGame.Business.UseCase {
-    public class CubeUseCase : ICubeUseCase, ICubeUpdatableUseCase, ICubePlacementUseCase {
+    public class CubeUseCase : ICubeUseCase, ICubeUpdatableUseCase, ICubePlacementUseCase, ICubeCreateUseCase {
         // Readonly Properties
         private readonly LazyInject<WeakReference<IPlatformUpdatableUseCase>> platformUseCase;
         private readonly LazyInject<WeakReference<IGameStateUpdatableUseCase>> gameStateUseCase;

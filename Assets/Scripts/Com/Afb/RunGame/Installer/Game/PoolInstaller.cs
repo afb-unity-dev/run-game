@@ -9,6 +9,7 @@ namespace Com.Afb.RunGame.Installers.Game {
         public override void InstallBindings() {
             BindCubePool();
             BindCutPool();
+            BindFinishPool();
         }
 
         // Private Methods
@@ -33,7 +34,21 @@ namespace Com.Afb.RunGame.Installers.Game {
                 .WithArguments(
                     new MemoryPoolSettings(
                         // Initial size
-                        4,
+                        2,
+                        // Max size
+                        int.MaxValue,
+                        PoolExpandMethods.OneAtATime)
+                );
+        }
+
+        private void BindFinishPool() {
+            Container.Bind<MonoPoolableMemoryPool<Transform, Vector3, FinishView>>()
+                .FromNew()
+                .AsSingle()
+                .WithArguments(
+                    new MemoryPoolSettings(
+                        // Initial size
+                        2,
                         // Max size
                         int.MaxValue,
                         PoolExpandMethods.OneAtATime)

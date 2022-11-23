@@ -18,10 +18,17 @@ namespace Com.Afb.RunGame.Installers.Game {
         [SerializeField]
         private Transform defaultCutParent;
 
+        [Header("Finish View")]
+        [SerializeField]
+        private GameObject finishPrefab;
+        [SerializeField]
+        private Transform defaultFinishParent;
+
         // Public Methods
         public override void InstallBindings() {
             BindCubeFactory();
             BindCutFactory();
+            BindFinishFactory();
         }
 
         // Private Methods
@@ -38,6 +45,14 @@ namespace Com.Afb.RunGame.Installers.Game {
                 .FromNew()
                 .AsSingle()
                 .WithArguments(cutPrefab, defaultCutParent)
+                .Lazy();
+        }
+
+        private void BindFinishFactory() {
+            Container.BindInterfacesTo<GenericPrefabFactory<FinishView>>()
+                .FromNew()
+                .AsSingle()
+                .WithArguments(finishPrefab, defaultFinishParent)
                 .Lazy();
         }
     }

@@ -1,6 +1,6 @@
 namespace Com.Afb.RunGame.Business.UseCase {
-    public interface ICubeUpdatableUseCase {
+    public interface ICubeCreateUseCase {
         // Methods
-        void Reset();
+        void CreateNewCube();
     }
 }
