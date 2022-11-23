@@ -8,5 +8,7 @@ namespace Com.Afb.RunGame.Util {
         public const float POSITION_THRESHOLD = 0.3f;
         public const float LEFT_BOUNDARY = -INITIAL_WIDTH / 2;
         public const float RIGHT_BOUNDARY = INITIAL_WIDTH / 2;
+        public const int CUT_DIRECTION_LEFT = 1;
+        public const int CUT_DIRECTION_RIGHT = -1;
     }
 }
