@@ -6,6 +6,6 @@ namespace Com.Afb.RunGame.Presentation.Presenter {
         // Properties
         IReadOnlyReactiveProperty<int> CharacterPosition { get; }
         IReadOnlyReactiveProperty<int> TargetPosition { get; }
-        IObservable<bool> GameOver { get; }
+        IObservable<bool> OnResetPlatform { get; }
     }
 }
