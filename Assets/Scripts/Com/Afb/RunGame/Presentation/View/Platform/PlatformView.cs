@@ -114,8 +114,9 @@ namespace Com.Afb.RunGame.Presentation.View {
         private void Restart() {
             movingPlatform.transform.DOMove(Vector3.zero, 0.5f);
             cubeSpawner.DespawnLast(lastPosition + 1);
-            finishSpawner.DespawnLast(1);
+            finishSpawner.DespawnLast();
             chibiView.ResetPosition();
+            finishSpawner.Spawn(0);
         }
 
         private void Reset() {
