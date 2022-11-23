@@ -7,6 +7,7 @@ namespace Com.Afb.RunGame.Installers.Game {
         public override void InstallBindings() {
             BindPlatformPresenter();
             BindGamePresenter();
+            BindCharacterPresenter();
         }
 
         // Private Methods
@@ -18,6 +19,12 @@ namespace Com.Afb.RunGame.Installers.Game {
 
         private void BindGamePresenter() {
             Container.BindInterfacesTo<GamePresenter>()
+                .AsSingle()
+                .Lazy();
+        }
+
+        private void BindCharacterPresenter() {
+            Container.BindInterfacesTo<CharacterPresenter>()
                 .AsSingle()
                 .Lazy();
         }
