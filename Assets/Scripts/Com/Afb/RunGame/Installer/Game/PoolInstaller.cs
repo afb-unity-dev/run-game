@@ -28,7 +28,7 @@ namespace Com.Afb.RunGame.Installers.Game {
         }
 
         private void BindCutPool() {
-            Container.Bind<MonoPoolableMemoryPool<Vector3, CubeCutModel, CutView>>()
+            Container.Bind<MonoPoolableMemoryPool<Transform, Vector3, CubeCutModel, CutView>>()
                 .FromNew()
                 .AsSingle()
                 .WithArguments(

@@ -3,5 +3,6 @@ namespace Com.Afb.RunGame.Presentation.Presenter {
         // Methods
         void SetCharacterPosition(int position);
         void SetTargetPosition(int position);
+        void SetGameOver(bool success);
     }
 }

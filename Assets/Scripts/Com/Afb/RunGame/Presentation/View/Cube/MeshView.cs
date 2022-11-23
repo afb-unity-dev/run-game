@@ -11,7 +11,7 @@ namespace Com.Afb.RunGame.Presentation.View {
         [Inject]
         private ICubeMeshPresenter cubeMeshPresenter;
         [Inject]
-        private MonoPoolableMemoryPool<Vector3, CubeCutModel, CutView> cutViewPool;
+        private CutSpawner cutSpawner;
 
         // Private Properties
         private MeshRenderer meshRenderer;
@@ -65,8 +65,7 @@ namespace Com.Afb.RunGame.Presentation.View {
 
         private void OnCubeCut(CubeCutModel cut) {
             if (cut != null) {
-                var position = new Vector3(cut.XPosition, transform.position.y, transform.position.z);
-                cutViewPool.Spawn(position, cut);
+                cutSpawner.Spawn(cut, transform.position);
             }
 
         }

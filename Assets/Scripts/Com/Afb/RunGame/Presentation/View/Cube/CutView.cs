@@ -4,19 +4,21 @@ using UnityEngine;
 using Zenject;
 
 namespace Com.Afb.RunGame.Presentation.View {
-    public class CutView : MonoBehaviour, IPoolable<Vector3, CubeCutModel> {
+    public class CutView : MonoBehaviour, IPoolable<Transform, Vector3, CubeCutModel> {
         // Dependencies
         [Inject]
-        private MonoPoolableMemoryPool<Vector3, CubeCutModel, CutView> cutViewPool;
+        private MonoPoolableMemoryPool<Transform, Vector3, CubeCutModel, CutView> cutViewPool;
 
         // Private Properties
         private MeshRenderer meshRenderer;
         private MeshFilter meshFilter;
+        private Rigidbody body;
 
         // Unity Methods
         private void Awake() {
             meshRenderer = GetComponent<MeshRenderer>();
             meshFilter = GetComponent<MeshFilter>();
+            body = GetComponent<Rigidbody>();
         }
 
         private void OnTriggerEnter(Collider other) {
@@ -26,7 +28,8 @@ namespace Com.Afb.RunGame.Presentation.View {
         }
 
         // Public Methods
-        public void OnSpawned(Vector3 position, CubeCutModel cutModel) {
+        public void OnSpawned(Transform parent, Vector3 position, CubeCutModel cutModel) {
+            transform.SetParent(parent);
             SetPosition(position);
             SetMesh(cutModel.Size);
             SetColor(cutModel.Color);
@@ -34,6 +37,8 @@ namespace Com.Afb.RunGame.Presentation.View {
         }
 
         public void OnDespawned() {
+            body.velocity = Vector3.zero;
+            body.angularVelocity = Vector3.zero;
         }
 
         // Private Methods
