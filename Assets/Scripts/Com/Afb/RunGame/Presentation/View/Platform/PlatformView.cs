@@ -18,8 +18,6 @@ namespace Com.Afb.RunGame.Presentation.View {
         private CutSpawner cutSpawner;
         [SerializeField]
         private Transform movingPlatform;
-        [SerializeField]
-        private ChibiView chibiView;
 
         // Dependencies
         [Inject]
@@ -115,7 +113,6 @@ namespace Com.Afb.RunGame.Presentation.View {
             movingPlatform.transform.DOMove(Vector3.zero, 0.5f);
             cubeSpawner.DespawnLast(lastPosition + 1);
             finishSpawner.DespawnLast();
-            chibiView.ResetPosition();
             finishSpawner.Spawn(0);
         }
 
@@ -123,7 +120,6 @@ namespace Com.Afb.RunGame.Presentation.View {
             float zPos = movingPlatform.position.z;
             movingPlatform.transform.position = Vector3.zero;
 
-            chibiView.ResetPosition();
             cubeSpawner.MoveChildren(zPos);
             finishSpawner.MoveChildren(zPos);
             cutSpawner.MoveChildren(zPos);
