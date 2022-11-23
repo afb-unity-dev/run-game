@@ -8,6 +8,7 @@ namespace Com.Afb.RunGame.Installers.Game {
             BindPlatformInteractor();
             BindGameInteractor();
             BindCharacterInteractor();
+            BindSoundInteractor();
         }
 
         // Private Methods
@@ -25,6 +26,12 @@ namespace Com.Afb.RunGame.Installers.Game {
 
         private void BindCharacterInteractor() {
             Container.BindInterfacesTo<CharacterInteractor>()
+                .AsSingle()
+                .Lazy();
+        }
+
+        private void BindSoundInteractor() {
+            Container.BindInterfacesTo<SoundInteractor>()
                 .AsSingle()
                 .Lazy();
         }
