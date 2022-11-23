@@ -6,7 +6,8 @@ namespace Com.Afb.RunGame.Installers.Game {
         // Public Methods
         public override void InstallBindings() {
             BindPlatformInteractor();
-            BindgameInteractor();
+            BindGameInteractor();
+            BindCharacterInteractor();
         }
 
         // Private Methods
@@ -16,8 +17,14 @@ namespace Com.Afb.RunGame.Installers.Game {
                 .Lazy();
         }
 
-        private void BindgameInteractor() {
+        private void BindGameInteractor() {
             Container.BindInterfacesTo<GameInteractor>()
+                .AsSingle()
+                .Lazy();
+        }
+
+        private void BindCharacterInteractor() {
+            Container.BindInterfacesTo<CharacterInteractor>()
                 .AsSingle()
                 .Lazy();
         }
