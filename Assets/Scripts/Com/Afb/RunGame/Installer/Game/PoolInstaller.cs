@@ -1,3 +1,4 @@
+using Com.Afb.RunGame.Business.Model;
 using Com.Afb.RunGame.Presentation.View;
 using UnityEngine;
 using Zenject;
@@ -26,7 +27,7 @@ namespace Com.Afb.RunGame.Installers.Game {
         }
 
         private void BindCutPool() {
-            Container.Bind<MonoPoolableMemoryPool<Vector3, Vector3, Color, CutView>>()
+            Container.Bind<MonoPoolableMemoryPool<Vector3, CubeCutModel, CutView>>()
                 .FromNew()
                 .AsSingle()
                 .WithArguments(

@@ -11,7 +11,7 @@ namespace Com.Afb.RunGame.Presentation.View {
         [Inject]
         private ICubeMeshPresenter cubeMeshPresenter;
         [Inject]
-        private MonoPoolableMemoryPool<Vector3, Vector3, Color, CutView> cutViewPool;
+        private MonoPoolableMemoryPool<Vector3, CubeCutModel, CutView> cutViewPool;
 
         // Private Properties
         private MeshRenderer meshRenderer;
@@ -52,15 +52,21 @@ namespace Com.Afb.RunGame.Presentation.View {
 
         private void OnSizeChange(Vector3 size) {
             var mesh = meshFilter.mesh;
-            CubeCreator.GenerateCube(mesh, size);
-            var collider = GetComponent<BoxCollider>();
-            collider.size = size;
+
+            if (size.x == 0) {
+                mesh.Clear();
+            }
+            else {
+                CubeCreator.GenerateCube(mesh, size);
+                var collider = GetComponent<BoxCollider>();
+                collider.size = size;
+            }
         }
 
         private void OnCubeCut(CubeCutModel cut) {
             if (cut != null) {
                 var position = new Vector3(cut.XPosition, transform.position.y, transform.position.z);
-                cutViewPool.Spawn(position, cut.Size, cut.Color);
+                cutViewPool.Spawn(position, cut);
             }
 
         }

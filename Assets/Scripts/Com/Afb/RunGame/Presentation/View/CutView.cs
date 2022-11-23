@@ -1,12 +1,13 @@
+using Com.Afb.RunGame.Business.Model;
 using Com.Afb.RunGame.Presentation.View.Util;
 using UnityEngine;
 using Zenject;
 
 namespace Com.Afb.RunGame.Presentation.View {
-    public class CutView : MonoBehaviour, IPoolable<Vector3, Vector3, Color> {
+    public class CutView : MonoBehaviour, IPoolable<Vector3, CubeCutModel> {
         // Dependencies
         [Inject]
-        private MonoPoolableMemoryPool<Vector3, Vector3, Color, CutView> cutViewPool;
+        private MonoPoolableMemoryPool<Vector3, CubeCutModel, CutView> cutViewPool;
 
         // Private Properties
         private MeshRenderer meshRenderer;
@@ -18,11 +19,18 @@ namespace Com.Afb.RunGame.Presentation.View {
             meshFilter = GetComponent<MeshFilter>();
         }
 
+        private void OnTriggerEnter(Collider other) {
+            if (other.gameObject.tag == "Despawner") {
+                cutViewPool.Despawn(this);
+            }
+        }
+
         // Public Methods
-        public void OnSpawned(Vector3 position, Vector3 size, Color color) {
+        public void OnSpawned(Vector3 position, CubeCutModel cutModel) {
             SetPosition(position);
-            SetMesh(size);
-            SetColor(color);
+            SetMesh(cutModel.Size);
+            SetColor(cutModel.Color);
+            SetTorque(cutModel.Direction);
         }
 
         public void OnDespawned() {
@@ -44,10 +52,11 @@ namespace Com.Afb.RunGame.Presentation.View {
             collider.size = size;
         }
 
-        private void OnTriggerEnter(Collider other) {
-            if (other.gameObject.tag == "Despawner") {
-                cutViewPool.Despawn(this);
-            } 
+        private void SetTorque(int direction) {
+            Vector3 torque = new Vector3(0.5f, 0, 1 * direction);
+            GetComponent<Rigidbody>().AddTorque(torque);
         }
+
+
     }
 }
