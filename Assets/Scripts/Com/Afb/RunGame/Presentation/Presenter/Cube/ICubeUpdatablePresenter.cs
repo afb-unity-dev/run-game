@@ -11,5 +11,6 @@ namespace Com.Afb.RunGame.Presentation.Presenter {
         void SetCut(CubeCutModel cut);
         void SetXPosition(float x);
         void Reset();
+        void SetPerfectScore(int score);
     }
 }

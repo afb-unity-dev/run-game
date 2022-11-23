@@ -1,9 +1,10 @@
+using System;
 using Com.Afb.RunGame.Business.Model;
 using UniRx;
 using UnityEngine;
 
 namespace Com.Afb.RunGame.Presentation.Presenter {
-    public class CubePresenter : ICubeMeshPresenter, ICubeMovePresenter, ICubeUpdatablePresenter {
+    public class CubePresenter : ICubeMeshPresenter, ICubeMovePresenter, ICubeUpdatablePresenter, ICubeScorePresenter {
         // Readonly Properties
         private readonly ReactiveProperty<float> xPosition = new ReactiveProperty<float>(0);
         private readonly ReactiveProperty<Vector3> size = new ReactiveProperty<Vector3>();
@@ -11,6 +12,7 @@ namespace Com.Afb.RunGame.Presentation.Presenter {
         private readonly ReactiveProperty<bool> isMoving = new ReactiveProperty<bool>(false);
         private readonly ReactiveProperty<float> moveSpeed = new ReactiveProperty<float>(0);
         private readonly ReactiveProperty<Color> color = new ReactiveProperty<Color>();
+        private readonly Subject<int> perfectScore = new Subject<int>();
 
         // Private Properties
         public IReadOnlyReactiveProperty<float> XPosition => xPosition;
@@ -19,6 +21,7 @@ namespace Com.Afb.RunGame.Presentation.Presenter {
         public IReadOnlyReactiveProperty<bool> IsMoving => isMoving;
         public IReadOnlyReactiveProperty<float> MoveSpeed => moveSpeed;
         public IReadOnlyReactiveProperty<Color> Color => color;
+        public IObservable<int> PerfectScore => perfectScore;
 
         // Public Methods
         public void Reset() {
@@ -47,6 +50,10 @@ namespace Com.Afb.RunGame.Presentation.Presenter {
 
         public void SetCut(CubeCutModel cut) {
             cubeCut.Value = cut;
+        }
+
+        public void SetPerfectScore(int score) {
+            perfectScore.OnNext(score);
         }
     }
 }
