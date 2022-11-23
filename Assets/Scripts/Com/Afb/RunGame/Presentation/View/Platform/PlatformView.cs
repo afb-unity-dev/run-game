@@ -18,6 +18,8 @@ namespace Com.Afb.RunGame.Presentation.View {
         private CutSpawner cutSpawner;
         [SerializeField]
         private Transform movingPlatform;
+        [SerializeField]
+        private ChibiView chibiView;
 
         // Dependencies
         [Inject]
@@ -76,14 +78,15 @@ namespace Com.Afb.RunGame.Presentation.View {
         private void OnGameStateChange(GameSate gameSate) {
             if (gameSate == GameSate.Complete) {
                 float platformPos = (lastPosition + 1) * Constants.CUBE_LENGTH
-                    + Constants.FINISH_LEGHTH;
+                    + Constants.INITIAL_POSITION
+                    + Constants.FINISH_LEGHTH / 2;
+
 
                 MovePlatform(platformPos);
             }
             else if (gameSate == GameSate.Fail) {
-                float platformPos = (lastPosition + 1) * Constants.CUBE_LENGTH
-                    + Constants.INITIAL_POSITION
-                    + Constants.FINISH_LEGHTH / 2;
+                float platformPos = lastPosition * Constants.CUBE_LENGTH
+                    + Constants.FINISH_LEGHTH;
 
                 MovePlatform(platformPos);
             }
@@ -112,12 +115,14 @@ namespace Com.Afb.RunGame.Presentation.View {
             movingPlatform.transform.DOMove(Vector3.zero, 0.5f);
             cubeSpawner.DespawnLast(lastPosition + 1);
             finishSpawner.DespawnLast(1);
+            chibiView.ResetPosition();
         }
 
         private void Reset() {
             float zPos = movingPlatform.position.z;
             movingPlatform.transform.position = Vector3.zero;
 
+            chibiView.ResetPosition();
             cubeSpawner.MoveChildren(zPos);
             finishSpawner.MoveChildren(zPos);
             cutSpawner.MoveChildren(zPos);

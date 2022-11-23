@@ -53,12 +53,16 @@ namespace Com.Afb.RunGame.Presentation.View {
         private void OnSizeChange(Vector3 size) {
             var mesh = meshFilter.mesh;
 
+            var collider = GetComponent<BoxCollider>();
+   
+
             if (size.x == 0) {
                 mesh.Clear();
+                collider.enabled = false;
             }
             else {
                 CubeCreator.GenerateCube(mesh, size);
-                var collider = GetComponent<BoxCollider>();
+                collider.enabled = true;
                 collider.size = size;
             }
         }
