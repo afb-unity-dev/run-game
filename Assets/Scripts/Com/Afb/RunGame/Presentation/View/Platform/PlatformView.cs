@@ -10,6 +10,8 @@ namespace Com.Afb.RunGame.Presentation.View {
         // Serialize Fields
         [SerializeField]
         private CubeSpawner cubeSpawner;
+        [SerializeField]
+        private FinishSpawner finishSpawner;
 
         // Dependencies
         [Inject]
@@ -23,6 +25,8 @@ namespace Com.Afb.RunGame.Presentation.View {
         // Unity Methods
         private void Start() {
             platformPresenter.CharacterPosition.TakeUntilDestroy(gameObject).Subscribe(OnCharacterPosition);
+            platformPresenter.TargetPosition.TakeUntilDestroy(gameObject).Subscribe(OnTargetPosition);
+            finishSpawner.Spawn(0);
         }
 
         // Public Methods
@@ -37,5 +41,9 @@ namespace Com.Afb.RunGame.Presentation.View {
             currentCubeView = cubeSpawner.Spawn(zPosition);
         }
 
+        private void OnTargetPosition(int position) {
+            float zPosition = position * Constants.CUBE_LENGTH + Constants.INITIAL_POSITION + Constants.FINISH_LEGHTH / 2;
+            finishSpawner.Spawn(zPosition);
+        }
     }
 }
