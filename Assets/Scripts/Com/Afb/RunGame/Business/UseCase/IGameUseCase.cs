@@ -7,8 +7,10 @@ namespace Com.Afb.RunGame.Business.UseCase {
         // Properties
         IReadOnlyReactiveProperty<float> Speed { get; }
         IReadOnlyReactiveProperty<CurrentCubeModel> CurrentCube { get; }
-        IObservable<CubeCutModel> LockCurrentCube { get; }
         IReadOnlyReactiveProperty<int> CharacterPosition { get; }
+        IReadOnlyReactiveProperty<int> TargetPosition { get; }
+        IObservable<CubeCutModel> LockCurrentCube { get; }
+        IObservable<bool> GameOver { get; }
 
         // Methods
         void PlaceCube(float xPosition);
