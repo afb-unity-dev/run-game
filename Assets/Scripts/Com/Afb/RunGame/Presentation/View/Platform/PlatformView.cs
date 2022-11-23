@@ -1,3 +1,4 @@
+using Com.Afb.RunGame.Business.Util;
 using Com.Afb.RunGame.Presentation.Interactor;
 using Com.Afb.RunGame.Presentation.Presenter;
 using Com.Afb.RunGame.Util;
@@ -14,6 +15,8 @@ namespace Com.Afb.RunGame.Presentation.View {
         [SerializeField]
         private FinishSpawner finishSpawner;
         [SerializeField]
+        private CutSpawner cutSpawner;
+        [SerializeField]
         private Transform movingPlatform;
 
         // Dependencies
@@ -21,6 +24,8 @@ namespace Com.Afb.RunGame.Presentation.View {
         private IPlatformInteractor platformInteractor;
         [Inject]
         private IPlatformPresenter platformPresenter;
+        [Inject]
+        private IGamePresenter gamePresenter;
 
         // Private Properties
         private CubeView currentCubeView;
@@ -28,10 +33,23 @@ namespace Com.Afb.RunGame.Presentation.View {
 
         // Unity Methods
         private void Start() {
-            platformPresenter.CharacterPosition.TakeUntilDestroy(gameObject).Subscribe(OnCharacterPosition);
-            platformPresenter.TargetPosition.TakeUntilDestroy(gameObject).Subscribe(OnTargetPosition);
-            platformPresenter.GameOver.TakeUntilDestroy(gameObject).Subscribe(OnGameOver);
             finishSpawner.Spawn(0);
+
+            platformPresenter.CharacterPosition
+                .TakeUntilDestroy(gameObject)
+                .Subscribe(OnCharacterPosition);
+
+            platformPresenter.TargetPosition
+                .TakeUntilDestroy(gameObject)
+                .Subscribe(OnTargetPosition);
+
+            gamePresenter.GameState
+                .TakeUntilDestroy(gameObject)
+                .Subscribe(OnGameStateChange);
+
+            platformPresenter.OnResetPlatform
+                .TakeUntilDestroy(gameObject)
+                .Subscribe(OnResetPlatform);
         }
 
         // Public Methods
@@ -48,14 +66,35 @@ namespace Com.Afb.RunGame.Presentation.View {
         }
 
         private void OnTargetPosition(int position) {
-            float zPosition = position * Constants.CUBE_LENGTH + Constants.INITIAL_POSITION + Constants.FINISH_LEGHTH / 2;
+            float zPosition = position * Constants.CUBE_LENGTH
+                + Constants.INITIAL_POSITION
+                + Constants.FINISH_LEGHTH / 2;
+
             finishSpawner.Spawn(zPosition);
         }
 
-        private void OnGameOver(bool success) {
-            if (success) {
-                float platformPos = (lastPosition + 1) * Constants.CUBE_LENGTH + Constants.FINISH_LEGHTH;
+        private void OnGameStateChange(GameSate gameSate) {
+            if (gameSate == GameSate.Complete) {
+                float platformPos = (lastPosition + 1) * Constants.CUBE_LENGTH
+                    + Constants.FINISH_LEGHTH;
+
                 MovePlatform(platformPos);
+            }
+            else if (gameSate == GameSate.Fail) {
+                float platformPos = (lastPosition + 1) * Constants.CUBE_LENGTH
+                    + Constants.INITIAL_POSITION
+                    + Constants.FINISH_LEGHTH / 2;
+
+                MovePlatform(platformPos);
+            }
+        }
+
+        private void OnResetPlatform(bool restart) {
+            if (restart) {
+                Restart();
+            }
+            else {
+                Reset();
             }
         }
 
@@ -64,10 +103,24 @@ namespace Com.Afb.RunGame.Presentation.View {
                 .OnComplete(onComplete);
         }
 
-
         private void MoveComplete() {
             float zPosition = lastPosition * Constants.CUBE_LENGTH + Constants.INITIAL_POSITION + Constants.CUBE_LENGTH / 2;
             currentCubeView = cubeSpawner.Spawn(zPosition);
+        }
+
+        private void Restart() {
+            movingPlatform.transform.DOMove(Vector3.zero, 0.5f);
+            cubeSpawner.DespawnLast(lastPosition + 1);
+            finishSpawner.DespawnLast(1);
+        }
+
+        private void Reset() {
+            float zPos = movingPlatform.position.z;
+            movingPlatform.transform.position = Vector3.zero;
+
+            cubeSpawner.MoveChildren(zPos);
+            finishSpawner.MoveChildren(zPos);
+            cutSpawner.MoveChildren(zPos);
         }
     }
 }
