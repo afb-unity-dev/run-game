@@ -37,13 +37,16 @@ namespace Com.Afb.RunGame.Presentation.View {
         }
 
         public void OnDespawned() {
+            body.isKinematic = true;
             body.velocity = Vector3.zero;
             body.angularVelocity = Vector3.zero;
+            body.isKinematic = false;
         }
 
         // Private Methods
         private void SetPosition(Vector3 position) {
             transform.position = position;
+            transform.rotation = Quaternion.Euler(0, 0, 0);
         }
 
         private void SetColor(Color color) {
@@ -58,10 +61,8 @@ namespace Com.Afb.RunGame.Presentation.View {
         }
 
         private void SetTorque(int direction) {
-            Vector3 torque = new Vector3(0.5f, 0, 1 * direction);
+            Vector3 torque = new Vector3(1f, 0.5f, 1 * direction);
             GetComponent<Rigidbody>().AddTorque(torque);
         }
-
-
     }
 }
