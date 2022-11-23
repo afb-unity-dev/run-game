@@ -18,9 +18,17 @@ namespace Com.Afb.RunGame.Presentation.View {
         public abstract TView Spawn(float zPosition);
 
         // Public Methods
-        public void DespawnLast(int amount) {
+        public void DespawnLast(int amount = -1) {
             List<TView> cubes = new List<TView>();
+
+            if (amount < 0) {
+                amount = parent.childCount;
+            }
+
             int lastIndex = parent.childCount - 1;
+
+            amount = Mathf.Min(amount, parent.childCount);
+
             for (int i = 0; i < amount; i++) {
                 int index = lastIndex - i;
                 var cube = parent.GetChild(index).GetComponent<TView>();

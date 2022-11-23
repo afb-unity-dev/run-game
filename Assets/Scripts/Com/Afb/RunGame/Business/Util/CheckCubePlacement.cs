@@ -6,7 +6,11 @@ namespace Com.Afb.RunGame.Business.Util {
     public static class CheckCubePlacement {
         // Public Functions
         public static CubeCutModel Check(CurrentCubeModel cube, float lastPosition, float lastWidth) {
-            if (Mathf.Abs(lastPosition - cube.XPosition) < Constants.POSITION_THRESHOLD) {
+            float index = Mathf.InverseLerp(0, Constants.CUBE_WIDTH, cube.Size.x);
+            float threshold = Mathf.Lerp(Constants.POSITION_THRESHOLD_MIN,
+                Constants.POSITION_THRESHOLD_MAX, index);
+
+            if (Mathf.Abs(lastPosition - cube.XPosition) < threshold) {
                 cube.XPosition = lastPosition;
             }
 

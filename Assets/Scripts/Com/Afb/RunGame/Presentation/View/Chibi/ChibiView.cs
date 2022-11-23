@@ -18,6 +18,8 @@ namespace Com.Afb.RunGame.Presentation.View {
         private ICharacterPresenter characterPresenter;
         [Inject]
         private IGamePresenter gamePresenter;
+        [Inject]
+        private IPlatformPresenter platformPresenter;
 
         // Private Properties
         private Rigidbody body;
@@ -43,6 +45,10 @@ namespace Com.Afb.RunGame.Presentation.View {
             gamePresenter.GameState
                 .TakeUntilDestroy(gameObject)
                 .Subscribe(OnGameStateChange);
+
+            platformPresenter.OnResetPlatform
+                .TakeUntilDestroy(gameObject)
+                .Subscribe(OnResetPlatform);
         }
 
         private void OnTriggerEnter(Collider other) {
@@ -58,6 +64,10 @@ namespace Com.Afb.RunGame.Presentation.View {
         }
 
         // Private Methods
+        private void OnResetPlatform(bool restart) {
+            ResetPosition();
+        }
+
         private void OnGameStateChange(GameSate gameSate) {
             this.gameSate = gameSate;
 
