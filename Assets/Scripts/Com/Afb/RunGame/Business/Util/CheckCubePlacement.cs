@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Com.Afb.RunGame.Business.Util {
     public static class CheckCubePlacement {
+        // Public Functions
         public static CubeCutModel Check(CurrentCubeModel cube, float lastPosition, float lastWidth) {
             if (Mathf.Abs(lastPosition - cube.XPosition) < Constants.POSITION_THRESHOLD) {
                 cube.XPosition = lastPosition;
@@ -29,8 +30,6 @@ namespace Com.Afb.RunGame.Business.Util {
             else if (currentRight > prevRight) {
                 cubeCutModel = CutCube.Cut(cube, currentLeft, prevRight, Constants.CUT_DIRECTION_RIGHT);
             }
-
-
 
             return cubeCutModel;
         }

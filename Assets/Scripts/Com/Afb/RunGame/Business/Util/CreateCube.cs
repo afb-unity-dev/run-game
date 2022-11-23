@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Com.Afb.RunGame.Business.Util {
     public static class CreateCube {
+        // Public Functions
         public static CurrentCubeModel Create(Vector3 size) {
             var currentCube = new CurrentCubeModel();
             currentCube.Size = size;
@@ -13,6 +14,7 @@ namespace Com.Afb.RunGame.Business.Util {
             return currentCube;
         }
 
+        // Private Functions
         private static Color GetColor() {
             return Random.ColorHSV();
         }

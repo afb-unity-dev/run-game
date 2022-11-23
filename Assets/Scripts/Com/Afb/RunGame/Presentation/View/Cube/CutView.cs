@@ -20,7 +20,7 @@ namespace Com.Afb.RunGame.Presentation.View {
         }
 
         private void OnTriggerEnter(Collider other) {
-            if (other.gameObject.tag == "Despawner") {
+            if (other.gameObject.tag == ViewConstants.DESPAWNER_TAG) {
                 cutViewPool.Despawn(this);
             }
         }

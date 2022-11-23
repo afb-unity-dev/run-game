@@ -6,14 +6,14 @@ using UniRx;
 namespace Com.Afb.RunGame.Presentation.Interactor {
     public class CubeInteractor : ICubeInteractor {
         // Readonly Properties
-        private readonly IGameUseCase platformUseCase;
+        private readonly ICubeUseCase cubeUseCase;
         private readonly ICubeUpdatablePresenter cubeUpdatablePresenter;
 
         // Private Properties
         private bool isCurrent = false;
 
-        public CubeInteractor(IGameUseCase platformUseCase, ICubeUpdatablePresenter cubeUpdatablePresenter) {
-            this.platformUseCase = platformUseCase;
+        public CubeInteractor(ICubeUseCase cubeUseCase, ICubeUpdatablePresenter cubeUpdatablePresenter) {
+            this.cubeUseCase = cubeUseCase;
             this.cubeUpdatablePresenter = cubeUpdatablePresenter;
         }
 
@@ -21,15 +21,15 @@ namespace Com.Afb.RunGame.Presentation.Interactor {
             isCurrent = true;
             cubeUpdatablePresenter.Reset();
 
-            platformUseCase.Speed
+            cubeUseCase.Speed
                 .TakeWhile(_ => isCurrent)
                 .Subscribe(SetSpeed);
 
-            platformUseCase.CurrentCube
+            cubeUseCase.CurrentCube
                 .TakeWhile(_ => isCurrent)
                 .Subscribe(OnCurrentCubeChange);
 
-            platformUseCase.LockCurrentCube
+            cubeUseCase.LockCurrentCube
                 .TakeWhile(_ => isCurrent)
                 .Subscribe(OnLockCurrentCube);
         }

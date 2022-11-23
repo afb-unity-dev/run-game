@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace Com.Afb.RunGame.Business.Util {
     public static class CutCube {
+        // Public Functions
         public static CubeCutModel Cut(CurrentCubeModel cube, float left, float right, int cutDirection) {
             float newWidth = Mathf.Max(right - left, 0);
             float cutWidth = cube.Size.x - newWidth;

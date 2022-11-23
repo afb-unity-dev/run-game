@@ -3,7 +3,7 @@ using UniRx;
 using UnityEngine;
 
 namespace Com.Afb.RunGame.Presentation.Presenter {
-    public class CubePresenter : ICubePresenter {
+    public class CubePresenter : ICubeMeshPresenter, ICubeMovePresenter, ICubeUpdatablePresenter {
         // Readonly Properties
         private readonly ReactiveProperty<float> xPosition = new ReactiveProperty<float>(0);
         private readonly ReactiveProperty<Vector3> size = new ReactiveProperty<Vector3>();
@@ -20,11 +20,11 @@ namespace Com.Afb.RunGame.Presentation.Presenter {
         public IReadOnlyReactiveProperty<float> MoveSpeed => moveSpeed;
         public IReadOnlyReactiveProperty<Color> Color => color;
 
+        // Public Methods
         public void Reset() {
             cubeCut.Value = null;
         }
 
-        // Public Methods
         public void SetColor(Color color) {
             this.color.Value = color;
         }

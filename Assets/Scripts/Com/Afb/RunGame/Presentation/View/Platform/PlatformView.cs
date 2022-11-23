@@ -9,11 +9,9 @@ namespace Com.Afb.RunGame.Presentation.View {
     public class PlatformView : MonoBehaviour {
         // Serialize Fields
         [SerializeField]
-        private Transform movingPlatformParent;
+        private CubeSpawner cubeSpawner;
 
         // Dependencies
-        [Inject]
-        private MonoPoolableMemoryPool<Transform, Vector3, CubeView> cubeViewPool;
         [Inject]
         private IPlatformInteractor platformInteractor;
         [Inject]
@@ -36,13 +34,8 @@ namespace Com.Afb.RunGame.Presentation.View {
         // Private Methods
         private void OnCharacterPosition(int position) {
             float zPosition = position * Constants.CUBE_LENGTH + Constants.INITIAL_POSITION + Constants.CUBE_LENGTH / 2;
-            SpawnCube(zPosition);
+            currentCubeView = cubeSpawner.Spawn(zPosition);
         }
 
-        private void SpawnCube(float zPosition) {
-            var position = new Vector3(0, -Constants.CUBE_HEIGHT / 2, zPosition);
-            currentCubeView = cubeViewPool.Spawn(movingPlatformParent, position);
-
-        }
     }
 }
