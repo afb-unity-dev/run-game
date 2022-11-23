@@ -7,11 +7,15 @@ namespace Com.Afb.RunGame.Business.Util {
         // Public Functions
         public static CubeCutModel Cut(CurrentCubeModel cube, float left, float right, int cutDirection) {
             float newWidth = Mathf.Max(right - left, 0);
+
+            if (newWidth < Constants.MIN_WIDTH) {
+                newWidth = 0;
+            }
+
             float cutWidth = cube.Size.x - newWidth;
 
             Vector3 newSize = cube.Size;
             newSize.x = newWidth;
-
             cube.Size = newSize;
 
             var cubeCutModel = new CubeCutModel();
