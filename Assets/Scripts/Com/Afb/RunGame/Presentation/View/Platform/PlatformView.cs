@@ -1,4 +1,3 @@
-using System;
 using Com.Afb.RunGame.Presentation.Interactor;
 using Com.Afb.RunGame.Presentation.Presenter;
 using Com.Afb.RunGame.Util;
@@ -55,7 +54,7 @@ namespace Com.Afb.RunGame.Presentation.View {
 
         private void OnGameOver(bool success) {
             if (success) {
-                float platformPos = (lastPosition + 1) * Constants.CUBE_LENGTH + Constants.FINISH_LEGHTH / 2;
+                float platformPos = (lastPosition + 1) * Constants.CUBE_LENGTH + Constants.FINISH_LEGHTH;
                 MovePlatform(platformPos);
             }
         }

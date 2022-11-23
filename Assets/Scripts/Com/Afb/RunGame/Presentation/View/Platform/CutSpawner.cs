@@ -1,6 +1,4 @@
 using Com.Afb.RunGame.Business.Model;
-using Com.Afb.RunGame.Presentation.Interactor;
-using Com.Afb.RunGame.Util;
 using UnityEngine;
 using Zenject;
 
