@@ -49,6 +49,7 @@ namespace Com.Afb.RunGame.Presentation.View {
         private void StopMove() {
             isMoving = false;
             body.velocity = Vector3.zero;
+            body.isKinematic = true;
         }
 
         private void BeginMove(Vector3 direction) {
@@ -59,6 +60,7 @@ namespace Com.Afb.RunGame.Presentation.View {
                 .TakeUntilDisable(gameObject)
                 .Subscribe(ChangeDirection);
 
+            body.isKinematic = false;
             isMoving = true;
             body.velocity = direction * speed;
         }
