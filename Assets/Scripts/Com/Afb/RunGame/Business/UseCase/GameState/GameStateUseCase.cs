@@ -6,6 +6,7 @@ using Zenject;
 namespace Com.Afb.RunGame.Business.UseCase {
     public class GameStateUseCase : IGameStateUseCase, IGameStateUpdatableUseCase {
         // Readonly Properties
+        private readonly ILevelUseCase levelUseCase;
         private readonly LazyInject<WeakReference<IPlatformUpdatableUseCase>> platformUseCase;
         private readonly ReactiveProperty<GameSate> gameState = new ReactiveProperty<GameSate>(GameSate.Ready);
 
@@ -14,13 +15,17 @@ namespace Com.Afb.RunGame.Business.UseCase {
 
         // Constructor
 
-        public GameStateUseCase(LazyInject<WeakReference<IPlatformUpdatableUseCase>> platformUseCase) {
+        public GameStateUseCase(LazyInject<WeakReference<IPlatformUpdatableUseCase>> platformUseCase,
+                 ILevelUseCase levelUseCase) {
+
             this.platformUseCase = platformUseCase;
+            this.levelUseCase = levelUseCase;
         }
 
         // Public Methods
         public void SetGameOver(bool success) {
             if (success) {
+                levelUseCase.IncrementLevel();
                 gameState.SetValueAndForceNotify(GameSate.Complete);
             }
             else {

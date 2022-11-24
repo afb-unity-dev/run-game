@@ -66,6 +66,10 @@ namespace Com.Afb.RunGame.Presentation.View {
         }
 
         private void OnTargetPosition(int position) {
+            if (position == 0) {
+                return;
+            }
+
             float zPosition = position * Constants.CUBE_LENGTH
                 + Constants.INITIAL_POSITION
                 + Constants.FINISH_LEGHTH / 2;
