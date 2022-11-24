@@ -1,3 +1,4 @@
+using System;
 using Com.Afb.RunGame.Business.UseCase;
 using Com.Afb.RunGame.Business.Util;
 using Com.Afb.RunGame.Presentation.Presenter;
@@ -9,16 +10,23 @@ namespace Com.Afb.RunGame.Presentation.Interactor {
         private readonly CompositeDisposable disposables = new CompositeDisposable();
         private readonly IGameUpdatablePresenter gameUpdatablePresenter;
         private readonly IGameStateUseCase gameStateUseCase;
+        private readonly ILevelUseCase levelUseCase;
 
         // Constructor
         public GameInteractor(IGameUpdatablePresenter gameUpdatablePresenter,
-                IGameStateUseCase gameStateUseCase) {
+                IGameStateUseCase gameStateUseCase,
+                ILevelUseCase levelUseCase) {
 
             this.gameUpdatablePresenter = gameUpdatablePresenter;
             this.gameStateUseCase = gameStateUseCase;
+            this.levelUseCase = levelUseCase;
 
             gameStateUseCase.GameState
                 .Subscribe(OnGameStateChange)
+                .AddTo(disposables);
+
+            levelUseCase.Level
+                .Subscribe(OnLevelChange)
                 .AddTo(disposables);
         }
 
@@ -38,6 +46,10 @@ namespace Com.Afb.RunGame.Presentation.Interactor {
         // Private Methods
         private void OnGameStateChange(GameSate gameState) {
             gameUpdatablePresenter.SetGameState(gameState);
+        }
+
+        private void OnLevelChange(int level) {
+            gameUpdatablePresenter.SetLevel(level);
         }
     }
 }
