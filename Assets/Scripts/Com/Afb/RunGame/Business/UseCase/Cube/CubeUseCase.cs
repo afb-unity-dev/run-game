@@ -7,10 +7,12 @@ using UnityEngine;
 using Zenject;
 
 namespace Com.Afb.RunGame.Business.UseCase {
-    public class CubeUseCase : ICubeUseCase, ICubeUpdatableUseCase, ICubePlacementUseCase, ICubeCreateUseCase {
+    public class CubeUseCase : IDisposable, ICubeUseCase, ICubeUpdatableUseCase, ICubePlacementUseCase, ICubeCreateUseCase {
         // Readonly Properties
+        private readonly CompositeDisposable disposables = new CompositeDisposable();
         private readonly LazyInject<WeakReference<IPlatformUpdatableUseCase>> platformUseCase;
         private readonly LazyInject<WeakReference<IGameStateUpdatableUseCase>> gameStateUseCase;
+        private readonly ILevelUseCase levelUseCase;
         private readonly ReactiveProperty<CurrentCubeModel> currentCube = new ReactiveProperty<CurrentCubeModel>(null);
         private readonly ReactiveProperty<float> speed = new ReactiveProperty<float>(5);
         private readonly Subject<CubeCutModel> lockCurrentCube = new Subject<CubeCutModel>();
@@ -30,15 +32,23 @@ namespace Com.Afb.RunGame.Business.UseCase {
 
         // Constructor
         public CubeUseCase(LazyInject<WeakReference<IPlatformUpdatableUseCase>> platformUseCase,
-                LazyInject<WeakReference<IGameStateUpdatableUseCase>> gameStateUseCase) {
+                LazyInject<WeakReference<IGameStateUpdatableUseCase>> gameStateUseCase,
+                ILevelUseCase levelUseCase) {
 
             this.platformUseCase = platformUseCase;
             this.gameStateUseCase = gameStateUseCase;
+            this.levelUseCase = levelUseCase;
+
+            levelUseCase.Level.Subscribe(OnLevelChange).AddTo(disposables);
 
             Reset();
         }
 
         // Public Methods
+        public void Dispose() {
+            disposables.Dispose();
+        }
+
         public void Reset() {
             lastSize = new Vector3(Constants.CUBE_WIDTH, Constants.CUBE_HEIGHT, Constants.CUBE_LENGTH);
             lastPosition = 0;
@@ -96,5 +106,12 @@ namespace Com.Afb.RunGame.Business.UseCase {
                 }
             }
         }
+
+        // Private Methods
+        private void OnLevelChange(int level) {
+            float speed = CubeSpeed.Get(level);
+            this.speed.SetValueAndForceNotify(speed);
+        }
+
     }
 }
