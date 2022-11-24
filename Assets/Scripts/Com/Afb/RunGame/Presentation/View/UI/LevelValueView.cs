@@ -24,7 +24,7 @@ namespace Com.Afb.RunGame.Presentation.View {
 
         // Private Properties
         private void OnLevelChange(int level) {
-            levelText.text = level.ToString();
+            levelText.text = (level + 1).ToString();
         }
     }
 }
