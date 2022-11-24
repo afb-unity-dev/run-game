@@ -2,6 +2,8 @@
 
 Project should work in vertical orientation.
 
+Open Game scene and play.
+
 ### Unity Vesion: 
 2021.3.2f1
 
