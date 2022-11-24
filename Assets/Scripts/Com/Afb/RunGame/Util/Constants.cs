@@ -15,5 +15,6 @@ namespace Com.Afb.RunGame.Util {
         public const int CUT_DIRECTION_LEFT = 1;
         public const int CUT_DIRECTION_RIGHT = -1;
         public const int NUMBER_OF_NOTES = 7;
+        public const string LEVEL_PREFS = "level";
     }
 }
