@@ -9,6 +9,7 @@ namespace Com.Afb.RunGame.Installers.Game {
             BindGameStateUseCase();
             BindPlatformUseCase();
             BindCubeUseCase();
+            BindLevelUseCase();
         }
 
         // Private Methods
@@ -40,6 +41,11 @@ namespace Com.Afb.RunGame.Installers.Game {
                 .FromMethod(() =>
                     new WeakReference<IPlatformUpdatableUseCase>(
                         Container.Resolve<IPlatformUpdatableUseCase>()));
+        }
+
+        private void BindLevelUseCase() {
+            Container.BindInterfacesTo<LevelUseCase>()
+                .AsSingle();
         }
     }
 }
